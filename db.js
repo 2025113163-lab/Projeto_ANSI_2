@@ -3,7 +3,7 @@ const sqlite3 = require('sqlite3').verbose();
 
 // Cria ligação à base de dados SQLite.
 // Caso o ficheiro "publicacoes.db" não exista, será criado automaticamente.
-const db = new sqlite3.Database('./publicacoes.db');
+const db = new sqlite3.Database('./repositorio.db');
 
 // Executa operações de base de dados em sequência, desta forma os comandos SQL são executados pela ordem definida.
 db.serialize(() => {
