@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositório de Publicações</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h1>Repositório Académico</h1>
+            <span id="status">Pronto para carregar.</span>
+        </div>
+
+        <button id="btnScrape">Atualizar Dados</button>
+    </header>
+
+  <!-- FILTROS -->
+<div class="controls">
+
+    <!-- LADO ESQUERDO -->
+    <div class="left-controls">
+
+        <select id="filterSecao">
+            <option value="">Todas as Secções</option>
+        </select>
+
+        <select id="filterAno">
+            <option value="">Todos os Anos</option>
+        </select>
+
+        <select id="filterLingua">
+            <option value="">Todas as Línguas</option>
+            <option value="PT">PT</option>
+            <option value="EN">EN</option>
+            <option value="ES">ES</option>
+            <option value="FR">FR</option>
+            <option value="DE">DE</option>
+        </select>
+
+        <span id="loadingMsg" class="loading">
+            A processar...
+        </span>
+
+    </div>
+
+    <!-- LADO DIREITO -->
+    <div class="right-controls">
+
+        <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Pesquisar autor ou título..."
+        >
+
+    </div>
+
+</div>
+        
+
+    <!-- TABELA -->
+    <div class="table-container">
+
+        <table id="tabela">
+
+            <thead>
+                <tr style="cursor: pointer;">
+                <th onclick="ordenarPor('id')">ID ↕</th>
+                <th onclick="ordenarPor('secao')">Secção ↕</th>
+                <th onclick="ordenarPor('autores')">Referência (Autores) ↕</th>
+                <th onclick="ordenarPor('lingua')">Língua ↕</th>
+                <th>Link</th>
+                </tr>
+            </thead>
+
+            <tbody id="corpoTabela">
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:40px; color:#94a3b8;">
+                        Clica em "Atualizar Dados" para começar.
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
