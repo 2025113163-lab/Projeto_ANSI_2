@@ -215,23 +215,12 @@ tr:hover {
     color: #1d4ed8;
 }
 
-.actions-group {
+.header-actions {
     display: flex;
-    align-items: center; 
-    gap: 15px;           
+    align-items: center;
+    gap: 12px;
 }
 
 .icon-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text-dark);
-    display: flex;
-    align-items: center;
-    padding: 4px;
-    border-radius: 6px;
-    transition: color 0.2s;
-    font-size: 18px;
-    
-}
-.icon-btn:hover { color: var(--primary); }
+    color: var(--primary);
+} .icon-btn:hover { color: var(--text-dark); }
