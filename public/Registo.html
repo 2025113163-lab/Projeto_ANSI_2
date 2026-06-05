@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registo | Repositório UFP</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<main class="login-page">
+
+    <!-- LEFT SIDE -->
+    <section class="login-left">
+
+        <div class="overlay"></div>
+
+        <div class="left-content">
+
+            <span class="badge">
+                📖 Repositório UFP
+            </span>
+
+            <h1>
+                Criar<br>
+                Conta
+            </h1>
+
+            <p>
+                Registe-se para gerir publicações e aceder ao sistema.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- RIGHT SIDE -->
+    <section class="login-right">
+
+        <a href="index.html" class="back-home">
+            Repositório
+        </a>
+
+        <div class="login-box">
+
+            <div class="login-header">
+
+                <h2>Criar Conta</h2>
+
+                <p>
+                    Preencha os seus dados para efetuar o registo.
+                </p>
+
+            </div>
+
+            <form class="login-form">
+
+                <!-- EMAIL -->
+                <div class="input-group">
+
+                    <label>Email</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            placeholder="email@exemplo.pt"
+                            maxlength="100"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <!-- USERNAME -->
+                <div class="input-group">
+
+                    <label>Utilizador</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user"></i>
+
+                        <input
+                            type="text"
+                            placeholder="Nome de utilizador"
+                            maxlength="30"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="input-group">
+
+                    <label>Password</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="••••••••"
+                            maxlength="30"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <!-- REPEAT PASSWORD -->
+                <div class="input-group">
+
+                    <label>Repetir Password</label>
+
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="••••••••"
+                            maxlength="30"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button type="submit" class="login-btn">
+                    Registar
+                </button>
+
+            </form>
+
+            <div class="divider">
+                <span>ou</span>
+            </div>
+
+            <button class="google-btn">
+
+                <i class="fa-brands fa-google"></i>
+
+                Continuar com Google
+
+            </button>
+
+            <p class="register-text">
+
+                Já tem conta?
+
+                <a href="login.html">
+                    Iniciar Sessão
+                </a>
+
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+</body>
+</html>
