@@ -214,3 +214,24 @@ tr:hover {
     background-color: #e2e8f0;
     color: #1d4ed8;
 }
+
+.actions-group {
+    display: flex;
+    align-items: center; 
+    gap: 15px;           
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color 0.2s;
+    font-size: 18px;
+    
+}
+.icon-btn:hover { color: var(--primary); }
