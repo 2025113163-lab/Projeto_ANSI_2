@@ -39,3 +39,14 @@ async function carregarPedidos() {
             "<p style='color:red;'>Erro ao ligar ao servidor.</p>";
     }
 }
+async function aprovar(id) {
+    await fetch(`http://localhost:3000/pedidos/${id}/aprovar`, { method: "PUT" });
+    carregarPedidos();
+}
+
+async function recusar(id) {
+    await fetch(`http://localhost:3000/pedidos/${id}`, { method: "DELETE" });
+    carregarPedidos();
+}
+
+carregarPedidos(); // ← chamar ao carregar a página

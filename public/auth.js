@@ -52,20 +52,37 @@ if (registerForm) {
     });
 }
 
-        let users = JSON.parse(localStorage.getItem("utilizadores")) || [];
+        document.addEventListener("DOMContentLoaded", () => {
 
-        const adminExists = users.find(u => u.username === "admin");
+    // Garantir que o admin existe sempre
+    let users = JSON.parse(localStorage.getItem("utilizadores")) || [];
+    if (!users.find(u => u.username === "admin")) {
+        users.push({
+            email: "admin@system.local",
+            username: "admin",
+            password: "Secure1!",
+            role: "admin"
+        });
+        localStorage.setItem("utilizadores", JSON.stringify(users));
+    }
 
-        if (!adminExists) {
-            users.push({
-                email: "admin@system.local",
-                username: "admin",
-                password: "Secure1!",
-                role: "admin"
-            });
+    // Registo
+    const registerForm = document.getElementById("registerForm");
+    if (registerForm) {
+        registerForm.addEventListener("submit", function(e) {
+            // ... código que já tens
+        });
+    }
 
-    localStorage.setItem("utilizadores", JSON.stringify(users));
-}
+    // Login
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function(e) {
+            // ... código que já tens
+        });
+    }
+
+});
 
 // =========================
 // LOGIN

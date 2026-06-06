@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("workForm");
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
 
         e.preventDefault();
 

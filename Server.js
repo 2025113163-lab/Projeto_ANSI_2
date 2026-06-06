@@ -54,14 +54,14 @@ app.post("/pedidos", (req, res) => {
     db.run(`
         INSERT INTO pedidos (secao, autores, ano, titulo, lingua, link)
         VALUES (?, ?, ?, ?, ?, ?)
-        `, [secao, autores, ano, titulo, lingua, link], function (err) {
+    `, [secao, autores, ano, titulo, lingua, link], function (err) {
 
         if (err) {
             return res.status(500).json({ ok: false, error: err.message });
         }
 
-    res.json({ ok: true });
-});
+        res.json({ ok: true });
+    });
 });
 
 
