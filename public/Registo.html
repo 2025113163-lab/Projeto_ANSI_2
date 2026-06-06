@@ -64,7 +64,7 @@
 
             </div>
 
-            <form class="login-form">
+            <form class="login-form" id="registerForm">
 
                 <!-- EMAIL -->
                 <div class="input-group">
@@ -76,6 +76,7 @@
 
                         <input
                             type="email"
+                            id="regEmail"
                             placeholder="email@exemplo.pt"
                             maxlength="100"
                             required
@@ -94,6 +95,7 @@
 
                         <input
                             type="text"
+                            id="regUser"
                             placeholder="Nome de utilizador"
                             maxlength="30"
                             required
@@ -112,7 +114,7 @@
 
                         <input
                             type="password"
-                            id="password"
+                            id="regPassword"
                             placeholder="••••••••"
                             maxlength="30"
                             required
@@ -174,5 +176,6 @@
 
 </main>
 
+<script src="auth.js"></script>
 </body>
 </html>

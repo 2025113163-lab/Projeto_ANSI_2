@@ -1,6 +1,12 @@
 let dadosOriginais = [];
 
 
+const utilizadorLogado =
+JSON.parse(localStorage.getItem("utilizadorLogado"));
+
+    if (!utilizadorLogado) {
+        window.location.href = "login.html";
+    }
 
 // PREENCHER FILTROS _______________________________________________________________________________________
 
@@ -303,3 +309,30 @@ $('#filterSecao, #filterAno, #filterLingua').on('change', aplicarFiltros);
 
 // Evento da pesquisa textual. Atualiza resultados enquanto o utilizador escreve.
 $('#searchInput').on('keyup', aplicarFiltros);
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const userName = document.getElementById("userName");
+
+    if (userName && utilizadorLogado) {
+        userName.textContent = `Olá, ${utilizadorLogado.username}`;
+    }
+
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+
+        logoutBtn.addEventListener("click", () => {
+
+            const confirmar = confirm(
+                "Pretende terminar sessão?"
+            );
+
+            if (!confirmar) return;
+
+            localStorage.removeItem("utilizadorLogado");
+
+            window.location.href = "login.html";
+        });
+    }
+});
