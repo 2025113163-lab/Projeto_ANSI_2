@@ -116,6 +116,13 @@ app.delete("/pedidos/:id", (req, res) => {
     res.json({ ok: true });
 });
 
+// eliminar publicação
+app.delete("/publicacoes/:id", (req, res) => {
+    db.run("DELETE FROM publicacoes WHERE id = ?", [req.params.id], function(err) {
+        if (err) return res.status(500).json({ ok: false, error: err.message });
+        res.json({ ok: true });
+    });
+});
 
 /* =========================================================
    START SERVER

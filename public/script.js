@@ -84,6 +84,15 @@ function renderizarTabela(dados) {
                 </span>
             </td>
 
+            <td style="text-align:center;">
+                ${utilizadorLogado.role === "admin"
+                    ? `<button onclick="eliminarPublicacao(${pub.id})"
+                           style="background:#ef4444; padding:3px 8px; font-size:12px; border-radius:6px; cursor:pointer; border:none; color:white;">
+                           🗑️
+                       </button>`
+                    : ""}
+            </td>
+
             <td>
                 <span class="badge lang-${(pub.lingua || '').trim().toUpperCase()}">
                     ${pub.lingua}
@@ -100,8 +109,24 @@ function renderizarTabela(dados) {
     }).join('');
 
     $('#corpoTabela').html(
-        html || '<tr><td colspan="5">Nenhum resultado encontrado.</td></tr>'
+        html || '<tr><td colspan="6">Nenhum resultado encontrado.</td></tr>'
     );
+}
+
+async function eliminarPublicacao(id) {
+    const confirmar = confirm("Tens a certeza que queres eliminar esta publicação?");
+    if (!confirmar) return;
+
+    const res = await fetch(`/publicacoes/${id}`, { method: "DELETE" });
+    const data = await res.json();
+
+    if (data.ok) {
+        // remove da lista local sem recarregar tudo
+        dadosOriginais = dadosOriginais.filter(p => p.id !== id);
+        aplicarFiltros();
+    } else {
+        alert("Erro ao eliminar.");
+    }
 }
 
 // ==============================
