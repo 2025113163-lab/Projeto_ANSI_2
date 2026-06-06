@@ -37,7 +37,8 @@ if (registerForm) {
         utilizadores.push({
             email,
             username,
-            password
+            password,
+            role: "user"
         });
 
         localStorage.setItem(
@@ -51,6 +52,20 @@ if (registerForm) {
     });
 }
 
+        let users = JSON.parse(localStorage.getItem("utilizadores")) || [];
+
+        const adminExists = users.find(u => u.username === "admin");
+
+        if (!adminExists) {
+            users.push({
+                email: "admin@system.local",
+                username: "admin",
+                password: "Secure1!",
+                role: "admin"
+            });
+
+    localStorage.setItem("utilizadores", JSON.stringify(users));
+}
 
 // =========================
 // LOGIN

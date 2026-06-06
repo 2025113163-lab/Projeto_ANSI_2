@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos | Repositório</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header>
+
+        <div>
+            <h1>Pedidos de Submissão</h1>
+            <span style="color:#94a3b8;">
+                Aprovar ou recusar trabalhos submetidos
+            </span>
+        </div>
+
+        <div class="header-actions">
+
+            <!-- VOLTAR -->
+            <button onclick="window.location.href='Index.html'" class="icon-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Repositório
+            </button>
+
+            <!-- USER -->
+            <span id="userName" style="margin-right:10px; font-weight:600;"></span>
+
+
+        </div>
+
+    </header>
+
+    <!-- CONTEÚDO -->
+    <div class="table-container" style="margin-top:30px;">
+
+        <div id="listaPedidos">
+            <p style="text-align:center; color:#94a3b8;">
+                A carregar pedidos...
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="pedidos.js"></script>
+
+</body>
+</html>

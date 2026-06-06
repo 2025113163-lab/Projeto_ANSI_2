@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submeter Trabalho | Repositório</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER SIMPLES -->
+    <header>
+
+        <div>
+            <h1>Submeter Trabalho</h1>
+            <span style="color:#94a3b8;">
+                Envia o teu trabalho para aprovação
+            </span>
+        </div>
+
+        <div class="header-actions">
+
+            <!-- BOTÃO VOLTAR -->
+            <button onclick="window.location.href='index.html'" class="icon-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Voltar
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- FORM -->
+    <div style="
+        max-width: 700px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    ">
+
+        <form id="workForm">
+
+            <div class="input-group">
+                <label>Título</label>
+                <input type="text" id="titulo" required>
+            </div>
+
+            <div class="input-group">
+                <label>Autores</label>
+                <input type="text" id="autores" required>
+            </div>
+
+            <div class="input-group">
+                <label>Secção</label>
+                <input type="text" id="secao" required>
+            </div>
+
+            <div class="input-group">
+                <label>Ano</label>
+                <input type="number" id="ano" required>
+            </div>
+
+            <div class="input-group">
+                <label>Língua</label>
+                <input type="text" id="lingua" required>
+            </div>
+
+            <div class="input-group">
+                <label>Link (opcional)</label>
+                <input type="url" id="link">
+            </div>
+
+            <button type="submit" class="login-btn" style="width:100%;">
+                Enviar para Aprovação
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="Adicionar.js"></script>
+
+</body>
+</html>
