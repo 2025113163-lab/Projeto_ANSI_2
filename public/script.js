@@ -10,6 +10,34 @@ if (!utilizadorLogado) {
 }
 
 // ==============================
+// REVIEWS (estado global)
+// ==============================
+let mediasReviews = {};   // { publicacao_id: { media, total } }
+let minhasReviews = {};   // { publicacao_id: estrelas }
+
+async function carregarReviews() {
+    try {
+        const uid = utilizadorLogado?.id || '';
+        const res = await fetch(`/reviews?utilizador_id=${uid}`);
+        const data = await res.json();
+
+        if (data.ok) {
+            mediasReviews = {};
+            data.medias.forEach(r => {
+                mediasReviews[r.publicacao_id] = { media: r.media, total: r.total };
+            });
+
+            minhasReviews = {};
+            data.minhas.forEach(r => {
+                minhasReviews[r.publicacao_id] = r.estrelas;
+            });
+        }
+    } catch (err) {
+        console.log("Erro ao carregar reviews:", err);
+    }
+}
+
+// ==============================
 // CARREGAR PUBLICAÇÕES (SQLITE)
 // ==============================
 async function carregarPublicacoes() {
@@ -19,6 +47,8 @@ async function carregarPublicacoes() {
 
         if (data.ok) {
             dadosOriginais = data.publicacoes;
+
+            await carregarReviews();
 
             preencherFiltros(dadosOriginais);
             renderizarTabela(dadosOriginais);
@@ -59,6 +89,38 @@ function preencherFiltros(dados) {
         '<option value="">Todas as Línguas</option>' +
         linguas.map(l => `<option value="${l}">${l}</option>`).join('')
     );
+}
+
+// ==============================
+// HELPER — ESTRELAS
+// ==============================
+function gerarEstrelas(pubId) {
+
+    const review   = mediasReviews[pubId];
+    const minha    = minhasReviews[pubId] || 0;
+    const media    = review ? review.media : null;
+    const total    = review ? review.total : 0;
+
+    // 5 estrelas interativas
+    const estrelas = [1, 2, 3, 4, 5].map(n => `
+        <span
+            class="estrela ${n <= minha ? 'selecionada' : ''}"
+            data-pub="${pubId}"
+            data-val="${n}"
+            title="${n} estrela${n > 1 ? 's' : ''}"
+        >★</span>
+    `).join('');
+
+    const mediaTexto = media !== null
+        ? `<span class="review-media" title="${total} avaliação${total !== 1 ? 'ões' : ''}">${media} <small>(${total})</small></span>`
+        : `<span class="review-sem-dados">Sem avaliações</span>`;
+
+    return `
+        <div class="estrelas-wrapper">
+            <div class="estrelas-row">${estrelas}</div>
+            ${mediaTexto}
+        </div>
+    `;
 }
 
 // ==============================
@@ -104,13 +166,89 @@ function renderizarTabela(dados) {
                     ? `<a href="${pub.link}" target="_blank" class="btn-link">Ver PDF 📄</a>`
                     : '<span style="color:#cbd5e1;">-</span>'}
             </td>
+
+            <td>${gerarEstrelas(pub.id)}</td>
         </tr>
         `;
     }).join('');
 
     $('#corpoTabela').html(
-        html || '<tr><td colspan="6">Nenhum resultado encontrado.</td></tr>'
+        html || '<tr><td colspan="7">Nenhum resultado encontrado.</td></tr>'
     );
+
+    // Ligar eventos às estrelas após renderizar
+    bindEstrelas();
+}
+
+// ==============================
+// EVENTOS DAS ESTRELAS
+// ==============================
+function bindEstrelas() {
+
+    // Hover — ilumina estrelas até ao cursor
+    $(document).on('mouseenter', '.estrela', function () {
+        const val = parseInt($(this).data('val'));
+        const pubId = $(this).data('pub');
+
+        $(`.estrela[data-pub="${pubId}"]`).each(function () {
+            $(this).toggleClass('hover', parseInt($(this).data('val')) <= val);
+        });
+    });
+
+    $(document).on('mouseleave', '.estrelas-row', function () {
+        $(this).find('.estrela').removeClass('hover');
+    });
+
+    // Click — submete review
+    $(document).on('click', '.estrela', async function () {
+
+        const pubId    = parseInt($(this).data('pub'));
+        const estrelas = parseInt($(this).data('val'));
+        const uid      = utilizadorLogado?.id;
+
+        if (!uid) return alert("Precisas de estar autenticado para avaliar.");
+
+        try {
+            const res = await fetch('/reviews', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ publicacao_id: pubId, utilizador_id: uid, estrelas })
+            });
+
+            const data = await res.json();
+
+            if (data.ok) {
+                // Atualizar estado local sem recarregar tudo
+                minhasReviews[pubId] = estrelas;
+
+                // Recalcular média localmente de forma optimista
+                const anterior = mediasReviews[pubId];
+                if (anterior) {
+                    const totalAnterior = anterior.total;
+                    const jaVotou      = minhasReviews[pubId] !== undefined;
+                    // Para uma atualização precisa, rebusca do servidor
+                } 
+
+                // Rebuscar só as reviews (leve, sem recarregar publicações)
+                await carregarReviews();
+
+                // Re-renderizar apenas a linha afetada
+                const pub = dadosOriginais.find(p => p.id === pubId);
+                if (pub) {
+                    $(`tr`).each(function () {
+                        const btnEl = $(this).find(`button[onclick="eliminarPublicacao(${pubId})"]`);
+                        const idCell = $(this).find('td:first');
+                        if (idCell.text().trim() == pubId || btnEl.length) {
+                            $(this).find('td:last').html(gerarEstrelas(pubId));
+                            bindEstrelas();
+                        }
+                    });
+                }
+            }
+        } catch (err) {
+            console.error("Erro ao submeter review:", err);
+        }
+    });
 }
 
 async function eliminarPublicacao(id) {

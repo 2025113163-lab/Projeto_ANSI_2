@@ -215,6 +215,58 @@ tr:hover {
     color: #1d4ed8;
 }
 
+/* ============================================================
+   REVIEWS / ESTRELAS
+   ============================================================ */
+
+.estrelas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 110px;
+}
+
+.estrelas-row {
+    display: flex;
+    gap: 2px;
+}
+
+.estrela {
+    font-size: 20px;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: color 0.12s, transform 0.1s;
+    line-height: 1;
+    user-select: none;
+}
+
+.estrela.selecionada {
+    color: #f59e0b;
+}
+
+.estrela.hover {
+    color: #fbbf24;
+    transform: scale(1.15);
+}
+
+.review-media {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.review-media small {
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+.review-sem-dados {
+    font-size: 11px;
+    color: #cbd5e1;
+    font-style: italic;
+}
+
 .header-actions {
     display: flex;
     align-items: center;

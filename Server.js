@@ -116,6 +116,67 @@ app.delete("/pedidos/:id", (req, res) => {
     res.json({ ok: true });
 });
 
+/* =========================================================
+   REVIEWS (AVALIAÇÕES)
+========================================================= */
+
+// submeter ou atualizar review
+app.post("/reviews", (req, res) => {
+
+    const { publicacao_id, utilizador_id, estrelas } = req.body;
+
+    if (!publicacao_id || !utilizador_id || !estrelas) {
+        return res.status(400).json({ ok: false, error: "Dados em falta." });
+    }
+
+    if (estrelas < 1 || estrelas > 5) {
+        return res.status(400).json({ ok: false, error: "Estrelas inválidas." });
+    }
+
+    // INSERT OR REPLACE garante que cada utilizador tem apenas uma review por publicação
+    db.run(`
+        INSERT INTO reviews (publicacao_id, utilizador_id, estrelas)
+        VALUES (?, ?, ?)
+        ON CONFLICT(publicacao_id, utilizador_id)
+        DO UPDATE SET estrelas = excluded.estrelas, created_at = datetime('now')
+    `, [publicacao_id, utilizador_id, estrelas], function (err) {
+        if (err) return res.status(500).json({ ok: false, error: err.message });
+        res.json({ ok: true });
+    });
+});
+
+// obter médias de todas as publicações (e a review do utilizador atual, se fornecido)
+app.get("/reviews", (req, res) => {
+
+    const utilizador_id = req.query.utilizador_id || null;
+
+    db.all(`
+        SELECT
+            publicacao_id,
+            ROUND(AVG(estrelas), 1)  AS media,
+            COUNT(*)                  AS total
+        FROM reviews
+        GROUP BY publicacao_id
+    `, [], (err, medias) => {
+
+        if (err) return res.status(500).json({ ok: false, error: err.message });
+
+        if (!utilizador_id) {
+            return res.json({ ok: true, medias, minhas: [] });
+        }
+
+        // Buscar a review do utilizador atual para saber qual estrela já selecionou
+        db.all(`
+            SELECT publicacao_id, estrelas
+            FROM reviews
+            WHERE utilizador_id = ?
+        `, [utilizador_id], (err2, minhas) => {
+            if (err2) return res.status(500).json({ ok: false, error: err2.message });
+            res.json({ ok: true, medias, minhas });
+        });
+    });
+});
+
 // eliminar publicação
 app.delete("/publicacoes/:id", (req, res) => {
     db.run("DELETE FROM publicacoes WHERE id = ?", [req.params.id], function(err) {
