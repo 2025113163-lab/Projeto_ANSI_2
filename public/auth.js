@@ -116,10 +116,7 @@ if (loginForm) {
             return;
         }
 
-        localStorage.setItem(
-            "utilizadorLogado",
-            JSON.stringify(user)
-        );
+        localStorage.setItem("utilizadorLogado", JSON.stringify(user));
 
         alert("Login efetuado com sucesso!");
 

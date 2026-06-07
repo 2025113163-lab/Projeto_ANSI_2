@@ -17,19 +17,19 @@ let minhasReviews = {};   // { publicacao_id: estrelas }
 
 async function carregarReviews() {
     try {
-        const uid = utilizadorLogado?.id || '';
+        const uid = utilizadorLogado?.id || utilizadorLogado?.username || '';
         const res = await fetch(`/reviews?utilizador_id=${uid}`);
         const data = await res.json();
 
         if (data.ok) {
             mediasReviews = {};
             data.medias.forEach(r => {
-                mediasReviews[r.publicacao_id] = { media: r.media, total: r.total };
+                mediasReviews[parseInt(r.publicacao_id)] = { media: r.media, total: r.total };
             });
 
             minhasReviews = {};
             data.minhas.forEach(r => {
-                minhasReviews[r.publicacao_id] = r.estrelas;
+                minhasReviews[parseInt(r.publicacao_id)] = r.estrelas;
             });
         }
     } catch (err) {
@@ -95,6 +95,7 @@ function preencherFiltros(dados) {
 // HELPER — ESTRELAS
 // ==============================
 function gerarEstrelas(pubId) {
+    pubId = parseInt(pubId);
 
     const review   = mediasReviews[pubId];
     const minha    = minhasReviews[pubId] || 0;
@@ -185,6 +186,11 @@ function renderizarTabela(dados) {
 // ==============================
 function bindEstrelas() {
 
+    // Remover handlers anteriores antes de adicionar novos (evita duplicados)
+    $(document).off('mouseenter', '.estrela')
+               .off('mouseleave', '.estrelas-row')
+               .off('click', '.estrela');
+
     // Hover — ilumina estrelas até ao cursor
     $(document).on('mouseenter', '.estrela', function () {
         const val = parseInt($(this).data('val'));
@@ -204,7 +210,7 @@ function bindEstrelas() {
 
         const pubId    = parseInt($(this).data('pub'));
         const estrelas = parseInt($(this).data('val'));
-        const uid      = utilizadorLogado?.id;
+        const uid      = utilizadorLogado?.id || utilizadorLogado?.username;
 
         if (!uid) return alert("Precisas de estar autenticado para avaliar.");
 
@@ -218,32 +224,14 @@ function bindEstrelas() {
             const data = await res.json();
 
             if (data.ok) {
-                // Atualizar estado local sem recarregar tudo
+                // Atualizar estado local imediatamente
                 minhasReviews[pubId] = estrelas;
-
-                // Recalcular média localmente de forma optimista
-                const anterior = mediasReviews[pubId];
-                if (anterior) {
-                    const totalAnterior = anterior.total;
-                    const jaVotou      = minhasReviews[pubId] !== undefined;
-                    // Para uma atualização precisa, rebusca do servidor
-                } 
 
                 // Rebuscar só as reviews (leve, sem recarregar publicações)
                 await carregarReviews();
 
-                // Re-renderizar apenas a linha afetada
-                const pub = dadosOriginais.find(p => p.id === pubId);
-                if (pub) {
-                    $(`tr`).each(function () {
-                        const btnEl = $(this).find(`button[onclick="eliminarPublicacao(${pubId})"]`);
-                        const idCell = $(this).find('td:first');
-                        if (idCell.text().trim() == pubId || btnEl.length) {
-                            $(this).find('td:last').html(gerarEstrelas(pubId));
-                            bindEstrelas();
-                        }
-                    });
-                }
+                // Encontra as estrelas diretamente pelo data-pub e substitui o wrapper
+                $(`.estrela[data-pub="${pubId}"]`).closest('.estrelas-wrapper').replaceWith($(gerarEstrelas(pubId)));
             }
         } catch (err) {
             console.error("Erro ao submeter review:", err);

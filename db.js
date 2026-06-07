@@ -57,11 +57,10 @@ db.serialize(() => {
         CREATE TABLE IF NOT EXISTS reviews (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             publicacao_id INTEGER NOT NULL,
-            utilizador_id INTEGER NOT NULL,
+            utilizador_id TEXT NOT NULL,
             estrelas INTEGER NOT NULL CHECK(estrelas BETWEEN 1 AND 5),
             created_at TEXT DEFAULT (datetime('now')),
             FOREIGN KEY (publicacao_id) REFERENCES publicacoes(id) ON DELETE CASCADE,
-            FOREIGN KEY (utilizador_id) REFERENCES utilizadores(id),
             UNIQUE (publicacao_id, utilizador_id)
         )
     `);
