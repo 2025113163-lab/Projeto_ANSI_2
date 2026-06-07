@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./db");
 
-// IMPORT DO TEU SCRAPER
+// Import do Scaper
 const scrape = require("./Extrair");
 
 const app = express();
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 /* =========================================================
-   SCRAPE → popula publicacoes
+   SCRAPE
 ========================================================= */
 app.get("/scrape", async (req, res) => {
     try {
@@ -26,7 +26,7 @@ app.get("/scrape", async (req, res) => {
 
 
 /* =========================================================
-   PUBLICAÇÕES (INDEX)
+   PUBLICAÇÕES
 ========================================================= */
 app.get("/publicacoes", (req, res) => {
 
@@ -43,10 +43,10 @@ app.get("/publicacoes", (req, res) => {
 
 
 /* =========================================================
-   PEDIDOS (USER → ADMIN)
+   PEDIDOS
 ========================================================= */
 
-// criar pedido
+// Regista um novo pedido
 app.post("/pedidos", (req, res) => {
 
     const { secao, autores, ano, titulo, lingua, link } = req.body;
@@ -65,7 +65,7 @@ app.post("/pedidos", (req, res) => {
 });
 
 
-// listar pedidos
+// Obtém os pedidos pendentes
 app.get("/pedidos", (req, res) => {
 
     db.all(
@@ -80,7 +80,7 @@ app.get("/pedidos", (req, res) => {
 });
 
 
-// aprovar pedido → move para publicacoes
+// Aprova um pedido e adiciona-o às publicações
 app.put("/pedidos/:id/aprovar", (req, res) => {
 
     const id = req.params.id;
@@ -108,7 +108,7 @@ app.put("/pedidos/:id/aprovar", (req, res) => {
 });
 
 
-// recusar pedido
+// Remove um pedido rejeitado
 app.delete("/pedidos/:id", (req, res) => {
 
     db.run("DELETE FROM pedidos WHERE id = ?", [req.params.id]);
@@ -120,7 +120,7 @@ app.delete("/pedidos/:id", (req, res) => {
    REVIEWS (AVALIAÇÕES)
 ========================================================= */
 
-// submeter ou atualizar review
+// Cria ou atualiza uma avaliação
 app.post("/reviews", (req, res) => {
 
     const { publicacao_id, utilizador_id, estrelas } = req.body;
@@ -133,7 +133,7 @@ app.post("/reviews", (req, res) => {
         return res.status(400).json({ ok: false, error: "Estrelas inválidas." });
     }
 
-    // INSERT OR REPLACE garante que cada utilizador tem apenas uma review por publicação
+    // Garante apenas uma avaliação por utilizador e publicação
     db.run(`
         INSERT INTO reviews (publicacao_id, utilizador_id, estrelas)
         VALUES (?, ?, ?)
@@ -145,7 +145,7 @@ app.post("/reviews", (req, res) => {
     });
 });
 
-// obter médias de todas as publicações (e a review do utilizador atual, se fornecido)
+// Obtém as médias das avaliações e, opcionalmente, a avaliação do utilizador
 app.get("/reviews", (req, res) => {
 
     const utilizador_id = req.query.utilizador_id || null;
@@ -165,7 +165,7 @@ app.get("/reviews", (req, res) => {
             return res.json({ ok: true, medias, minhas: [] });
         }
 
-        // Buscar a review do utilizador atual para saber qual estrela já selecionou
+        // Obtém a avaliação previamente atribuída pelo utilizador
         db.all(`
             SELECT publicacao_id, estrelas
             FROM reviews
@@ -177,7 +177,7 @@ app.get("/reviews", (req, res) => {
     });
 });
 
-// eliminar publicação
+// Remover publicação
 app.delete("/publicacoes/:id", (req, res) => {
     db.run("DELETE FROM publicacoes WHERE id = ?", [req.params.id], function(err) {
         if (err) return res.status(500).json({ ok: false, error: err.message });
@@ -186,7 +186,7 @@ app.delete("/publicacoes/:id", (req, res) => {
 });
 
 /* =========================================================
-   START SERVER
+   Inicialização
 ========================================================= */
 app.listen(PORT, () => {
     console.log(`🚀 Server running: http://localhost:${PORT}`);

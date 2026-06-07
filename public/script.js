@@ -12,8 +12,8 @@ if (!utilizadorLogado) {
 // ==============================
 // REVIEWS (estado global)
 // ==============================
-let mediasReviews = {};   // { publicacao_id: { media, total } }
-let minhasReviews = {};   // { publicacao_id: estrelas }
+let mediasReviews = {};
+let minhasReviews = {};
 
 async function carregarReviews() {
     try {
@@ -186,12 +186,12 @@ function renderizarTabela(dados) {
 // ==============================
 function bindEstrelas() {
 
-    // Remover handlers anteriores antes de adicionar novos (evita duplicados)
+    // Remover handlers anteriores antes de adicionar novos
     $(document).off('mouseenter', '.estrela')
                .off('mouseleave', '.estrelas-row')
                .off('click', '.estrela');
 
-    // Hover — ilumina estrelas até ao cursor
+    // Ilumina estrelas até ao cursor
     $(document).on('mouseenter', '.estrela', function () {
         const val = parseInt($(this).data('val'));
         const pubId = $(this).data('pub');
@@ -205,7 +205,7 @@ function bindEstrelas() {
         $(this).find('.estrela').removeClass('hover');
     });
 
-    // Click — submete review
+    // Submete review
     $(document).on('click', '.estrela', async function () {
 
         const pubId    = parseInt($(this).data('pub'));
@@ -224,10 +224,8 @@ function bindEstrelas() {
             const data = await res.json();
 
             if (data.ok) {
-                // Atualizar estado local imediatamente
                 minhasReviews[pubId] = estrelas;
 
-                // Rebuscar só as reviews (leve, sem recarregar publicações)
                 await carregarReviews();
 
                 // Encontra as estrelas diretamente pelo data-pub e substitui o wrapper

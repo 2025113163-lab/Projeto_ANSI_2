@@ -13,10 +13,6 @@ const iconv   = require("iconv-lite");
  * -------------------------------------------------------------
  * DETEÇÃO DE LÍNGUA POR HEURÍSTICA
  * -------------------------------------------------------------
- *
- * O tinyld falha frequentemente em títulos académicos curtos.
- * Esta abordagem usa padrões e palavras típicas de cada língua,
- * sendo muito mais fiável para este tipo de conteúdo.
  */
 
 // Padrões ortográficos e palavras-chave por língua.
@@ -55,7 +51,7 @@ const LINGUA_HEURISTICAS = [
     },
     {
         codigo: "EN",
-        // Inglês como fallback — palavras muito comuns e ausência de acentos.
+        // Inglês como fallback
         padroes: [/^[a-zA-Z0-9\s\-:,.'()&]+$/],
         palavras: ["the", "of", "and", "for", "in", "a", "an", "with", "on", "at",
                    "analysis", "study", "development", "system", "method", "evaluation",
@@ -240,24 +236,14 @@ module.exports = async function scrape(db) {
 
                     const celulas = $(tr).find("td");
 
-                    /**
-                     * -------------------------------------------------
-                     * VERIFICAR CABEÇALHOS DE SECÇÃO PRIMEIRO
-                     *
-                     * Linhas de cabeçalho podem ter apenas 1 célula
-                     * (colspan) ou ter a coluna esquerda vazia.
-                     * Verificamos ANTES de descartar por nº de colunas.
-                     * -------------------------------------------------
-                     */
                     const textoLinha = $(tr).text().trim();
                     const novaSecao  = identificarSecao(textoLinha);
 
                     if (novaSecao) {
                         secaoAtual = novaSecao;
-                        return; // É um cabeçalho, não uma publicação.
+                        return;
                     }
 
-                    // Agora sim descartamos linhas com colunas a menos.
                     if (celulas.length < 2) return;
 
                     const tdEsquerda = celulas.eq(0);

@@ -49,4 +49,4 @@ async function recusar(id) {
     carregarPedidos();
 }
 
-carregarPedidos(); // ← chamar ao carregar a página
+carregarPedidos();

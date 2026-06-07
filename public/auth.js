@@ -66,22 +66,6 @@ if (registerForm) {
         localStorage.setItem("utilizadores", JSON.stringify(users));
     }
 
-    // Registo
-    const registerForm = document.getElementById("registerForm");
-    if (registerForm) {
-        registerForm.addEventListener("submit", function(e) {
-            // ... código que já tens
-        });
-    }
-
-    // Login
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-        loginForm.addEventListener("submit", function(e) {
-            // ... código que já tens
-        });
-    }
-
 });
 
 // =========================
