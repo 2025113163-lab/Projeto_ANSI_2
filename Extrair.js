@@ -27,7 +27,7 @@ const LINGUA_HEURISTICAS = [
         padroes: [/ção|ções|ã|õ|ê|ô|ú|á|é|í|ó|à/i],
         palavras: ["uma", "para", "com", "dos", "das", "em", "na", "no", "ao", "aos",
                    "de", "do", "da", "os", "as", "análise", "estudo", "avaliação",
-                   "desenvolvimento", "sistema", "método", "aplicação"]
+                   "desenvolvimento", "sistema", "método", "aplicação", "mobilidade"]
     },
     {
         codigo: "ES",
